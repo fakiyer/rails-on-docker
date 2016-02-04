@@ -1,5 +1,7 @@
 db:
   image: postgres
+  volumes_from:
+    - datastore
 app:
   build: .
   command: bundle exec unicorn_rails -E development -c config/unicorn.rb
@@ -24,3 +26,4 @@ nginx:
     - datastore
 datastore:
   build: containers/datastore
+  tty: true
