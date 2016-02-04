@@ -6,7 +6,7 @@ worker_processes 1
 listen "/tmp/unicorn.sock"
 listen 3000
 
-pid "#{app_path}/tmp/unicorn.pid"
+pid "#{app_path}/tmp/pids/unicorn.pid"
 timeout 60
 
 stderr_path "log/unicorn.stderr.log"
