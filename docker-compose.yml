@@ -5,6 +5,8 @@ app:
   command: bundle exec unicorn_rails -E development -c config/unicorn.rb
   volumes:
     - .:/myapp
+  volumes_from:
+    - datastore
   ports:
     - "3000:3000"
   links:
@@ -18,3 +20,7 @@ nginx:
   volumes:
     - ./containers/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     - ./containers/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+  volumes_from:
+    - datastore
+datastore:
+  build: containers/datastore

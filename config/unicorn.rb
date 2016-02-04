@@ -3,7 +3,7 @@ working_directory app_path
 
 worker_processes 1
 
-listen "/tmp/unicorn.sock"
+listen "/data/unicorn.sock"
 listen 3000
 
 pid "#{app_path}/tmp/pids/unicorn.pid"
