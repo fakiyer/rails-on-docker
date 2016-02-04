@@ -26,4 +26,3 @@ nginx:
     - datastore
 datastore:
   build: containers/datastore
-  tty: true
