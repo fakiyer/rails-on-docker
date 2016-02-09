@@ -1,5 +1,5 @@
 db:
-  image: postgres
+  image: postgres:9.5
   volumes_from:
     - datastore
 app:
@@ -14,7 +14,7 @@ app:
   links:
     - db
 nginx:
-  image: nginx
+  image: nginx:1.9
   ports:
     - "8000:80"
   links:
