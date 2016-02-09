@@ -2,6 +2,10 @@ db:
   image: postgres:9.5
   volumes_from:
     - datastore
+redis:
+  image: redis:3.0
+  volumes_from:
+    - datastore
 app:
   build: .
   command: bash -c "rm -f tmp/pids/unicorn.pid && bundle exec unicorn_rails -E development -c config/unicorn.rb"
@@ -13,6 +17,7 @@ app:
     - "3000:3000"
   links:
     - db
+    - redis
 nginx:
   image: nginx:1.9
   ports:

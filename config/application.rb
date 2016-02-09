@@ -29,6 +29,16 @@ module Myapp
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # Use Redis caching
+    redis_config = YAML.load(File.open(Rails.root.join("config/redis.yml")))[Rails.env].symbolize_keys
+    redis_config[:namespace] += ":cache"
+    config.cache_store = :redis_store, { host: redis_config[:host],
+                                         port: redis_config[:port],
+                                         db: redis_config[:cache_db],
+                                         namespace: redis_config[:namespace],
+                                         expires_in: 1.day,
+                                       }
+
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
   end
