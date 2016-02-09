@@ -4,7 +4,7 @@ db:
     - datastore
 app:
   build: .
-  command: bundle exec unicorn_rails -E development -c config/unicorn.rb
+  command: bash -c "rm tmp/pids/unicorn.pid && bundle exec unicorn_rails -E development -c config/unicorn.rb"
   volumes:
     - .:/myapp
   volumes_from:
