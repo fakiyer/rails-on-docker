@@ -31,6 +31,9 @@ module Myapp
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # Configure sensitive parameters which will be filtered from the log file.
+    # config.filter_parameters.push(:password, :password_confirmation)
+
     # Use Redis caching
     redis_config = YAML.load(File.open(Rails.root.join("config/redis.yml")))[Rails.env].symbolize_keys
     redis_config[:namespace] += ":cache"
