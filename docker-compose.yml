@@ -31,7 +31,9 @@ nginx:
 
 app:
   build: .
-  command: bash -c "rm -f tmp/pids/unicorn.pid && bundle exec unicorn_rails -E development -c config/unicorn.rb"
+  command: bash -c "rm -f tmp/pids/unicorn.pid && bundle exec unicorn_rails -c config/unicorn.rb"
+  environment:
+    RAILS_ENV: development
   volumes:
     - .:/myapp
   volumes_from:
