@@ -1,11 +1,29 @@
+datastore:
+  build: containers/datastore
+  tty: true
+
 db:
   image: postgres:9.5
   volumes_from:
     - datastore
+
 redis:
   image: redis:3.0
   volumes_from:
     - datastore
+
+nginx:
+  image: nginx:1.9
+  ports:
+    - "8000:80"
+  volumes:
+    - ./containers/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./containers/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+  volumes_from:
+    - datastore
+  links:
+    - app
+
 app:
   build: .
   command: bash -c "rm -f tmp/pids/unicorn.pid && bundle exec unicorn_rails -E development -c config/unicorn.rb"
@@ -16,16 +34,3 @@ app:
   links:
     - db
     - redis
-nginx:
-  image: nginx:1.9
-  ports:
-    - "8000:80"
-  links:
-    - app
-  volumes:
-    - ./containers/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    - ./containers/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
-  volumes_from:
-    - datastore
-datastore:
-  build: containers/datastore
