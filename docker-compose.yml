@@ -13,8 +13,6 @@ app:
     - .:/myapp
   volumes_from:
     - datastore
-  ports:
-    - "3000:3000"
   links:
     - db
     - redis
