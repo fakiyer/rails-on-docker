@@ -1,6 +1,11 @@
 datastore:
-  build: containers/datastore
+  image: busybox
   tty: true
+  volumes:
+    - /var/lib/postgresql/data
+    - /data
+    - /myapp/public
+    - /myapp/tmp/sockets
 
 db:
   image: postgres:9.5
