@@ -1,8 +1,12 @@
 FROM busybox:latest
 
-VOLUME /var/lib/pgsql
-VOLUME /data
-VOLUME /myapp/public
-VOLUME /myapp/log
+# for postgres
+VOLUME /var/lib/postgresql
 
-CMD /bin/sh
+# for redis
+VOLUME /data
+
+# for nginx
+VOLUME /myapp/public
+VOLUME /myapp/tmp/sockets
+#VOLUME /myapp/log
