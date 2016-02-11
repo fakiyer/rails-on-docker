@@ -8,17 +8,17 @@ datastore:
     - /myapp/tmp/sockets
 
 db:
-  image: postgres:9.5
+  image: postgres:9.5.0
   volumes_from:
     - datastore
 
 redis:
-  image: redis:3.0
+  image: redis:3.0.7
   volumes_from:
     - datastore
 
 nginx:
-  image: nginx:1.9
+  image: nginx:1.9.10
   ports:
     - "8000:80"
   volumes:
