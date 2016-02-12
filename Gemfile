@@ -54,5 +54,7 @@ group :development do
   gem 'bullet'
   gem 'better_errors'
   gem 'pry-rails'
+
+  gem 'rubocop', require: false
 end
 
