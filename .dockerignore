@@ -15,4 +15,7 @@ tmp
 
 ## docker
 .dockerignore
-containers
+docker
+
+## build
+build.*

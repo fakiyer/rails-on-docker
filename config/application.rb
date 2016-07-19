@@ -26,16 +26,17 @@ module Myapp
     # config.filter_parameters.push(:password, :password_confirmation)
 
     # Use Redis caching
-    redis_config = YAML.load(File.open(Rails.root.join("config/redis.yml")))[Rails.env].symbolize_keys
+    redis_config = YAML.load(ERB.new(File.read(Rails.root.join("config/redis.yml.erb"))).result)[Rails.env].symbolize_keys
     redis_config[:namespace] += ":cache"
     config.cache_store = :redis_store, { host: redis_config[:host],
                                          port: redis_config[:port],
                                          db: redis_config[:cache_db],
                                          namespace: redis_config[:namespace],
-                                         expires_in: 1.day,
-                                       }
+                                         expires_in: 1.day }
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # config.active_job.queue_adapter = :sidekiq
   end
 end
