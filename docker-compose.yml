@@ -1,58 +1,18 @@
-datastore:
-  image: busybox
-  tty: true
-  volumes:
-    - /var/lib/postgresql/data
-    - /data
-    - /myapp/tmp/sockets
+version: '2'
+services:
+  db:
+    image: mysql:5.6
+    volumes:
+      - './data:/var/lib/mysql'
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
 
-db:
-  image: postgres:9.5.2
-  volumes_from:
-    - datastore
-
-redis:
-  image: redis:3.0.7
-  volumes_from:
-    - datastore
-
-nginx:
-  build: ./docker/nginx/.
-  dockerfile: Dockerfile.dev
-  ports:
-    - "8000:80"
-    - "443:443"
-  volumes:
-    - ./docker/nginx/development/ssl/nginx.crt:/etc/nginx/ssl/nginx.crt:ro
-    - ./docker/nginx/development/ssl/nginx.key:/etc/nginx/ssl/nginx.key:ro
-    - ./docker/nginx/development/ssl/dhparam.pem:/etc/nginx/ssl/dhparam.pem:ro
-  volumes_from:
-    - datastore
-  links:
-    - app
-
-app:
-  build: .
-  command: bash -c "rm -f tmp/pids/unicorn.pid && unicorn_rails -c config/unicorn.rb"
-  environment:
-    RAILS_ENV: development
-  volumes:
-    - .:/myapp
-  volumes_from:
-    - datastore
-  links:
-    - db
-    - redis
-
-# worker:
-#   build: .
-#   command: bash -c "rm -f tmp/pids/sidekiq.pid && sidekiq -C config/sidekiq.yml"
-#   environment:
-#     RAILS_ENV: development
-#   volumes:
-#     - .:/myapp
-#   volumes_from:
-#     - datastore
-#   links:
-#     - db
-#     - redis
+  app:
+    build: .
+    command: bundle exec rails s -p 30000 -b '0.0.0.0'
+    volumes:
+      - .:/myapp:cached
+    ports:
+      - "30000:30000"
+    depends_on:
+      - db
